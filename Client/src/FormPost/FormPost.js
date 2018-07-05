@@ -17,7 +17,7 @@ class FormPost extends React.Component{
         super( props );
 
         this.state = {
-            userName: 'PhilBro',
+            userName: 'oleg',
             catalog: 'soccer',
             content: '',
             subject: '', 
@@ -29,8 +29,9 @@ class FormPost extends React.Component{
     sendPost(){
         
         let data = this.state;
+      
         console.log(JSON.stringify(data))
-        fetch('http://172.20.10.3:4000/posts',{
+        fetch('http://localhost:4000/postCreate',{
             method: 'post',
             body: JSON.stringify(data),
             headers: {
@@ -45,7 +46,7 @@ class FormPost extends React.Component{
             console.log( err)
         });
         
-        
+
         
     }
     subjectHandler( event ){       
@@ -75,4 +76,6 @@ class FormPost extends React.Component{
             </div>
         );
     }
+
+    
 }
