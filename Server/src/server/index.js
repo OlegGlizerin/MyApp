@@ -1,5 +1,6 @@
 var routeHome = require('./route/home');
 var routePost = require('./route/post');
+var routePostCreate = require('./route/postCreate');
 const express = require('express')
 
 var cors = require('cors')
@@ -15,6 +16,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.use(routeHome);
 app.use(routePost);
+app.use(routePostCreate);
 //routeHome.use("/", routeHome);
 
 
@@ -24,7 +26,7 @@ app.use(routePost);
 
 
 
-app.listen(4000, () => console.log('Example app listening on port 4000!'))
+app.listen(5000, () => console.log('Example app listening on port 5000!'))
 
 
 
