@@ -31,7 +31,7 @@ class FormPost extends React.Component{
         let data = this.state;
       
         console.log(JSON.stringify(data))
-        fetch('http://localhost:4000/postCreate',{
+        fetch('http://localhost:5000/postCreate',{
             method: 'post',
             body: JSON.stringify(data),
             headers: {
