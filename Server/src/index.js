@@ -1,6 +1,6 @@
-var routeHome = require('./route/home');
-var routePost = require('./route/post');
-var routePostCreate = require('./route/postCreate');
+var routeHome = require('./appRouting/home');
+var routePost = require('./appRouting/post');
+var routePostCreate = require('./appRouting/postCreate');
 const express = require('express')
 
 var cors = require('cors')

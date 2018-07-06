@@ -4,36 +4,21 @@
 
 var allRows = [];
 const express = require('express');
+const dbConnection = require('../dalManager/appDbConnection')
 
 routePost = express.Router();
 
 routePost.post("/postCreate", postContent);
 
-var connection;
+
 function postContent(req, res, next) {
 
-    var x = req.body;
-    var Connection = require('tedious').Connection;
-    var config = {
-        userName: 'myapplicationdb',
-        password: 'Rc4Q71N13~~5',
-        server: 'mssql2.gear.host',
-        // If you are on Microsoft Azure, you need this:  
-        options: { encrypt: true, database: 'myapplicationdb' }
-    };
-    connection = new Connection(config);
-    connection.on('connect', function (err) {
-        // If no error, then good to proceed.  
-        console.log("Connected");
-        executeStatement1();
-  
-        
-    });
 
-    //console.log(allRows.length);
+    executeStatement1();
+
     res.send(allRows);
     allRows = [];
-    // console.log("posted post.");
+
 }
 
 
@@ -80,7 +65,7 @@ function executeStatement1() {
 
     
     //console.log(allRows.values);
-    connection.execSql(request);
+    dbConnection.execSql(request);
     
 }  
 

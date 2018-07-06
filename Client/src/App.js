@@ -15,7 +15,7 @@ class App extends Component {
     }
     loadPosts(){
         let posts = [];
-        fetch('http://localhost:4000/posts',{
+        fetch('http://localhost:5000/posts',{
             method: 'post',
             headers: {
                 'content-type': 'application/json'

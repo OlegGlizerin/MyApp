@@ -4,36 +4,21 @@
 
 var allRows = [];
 const express = require('express');
+const dbConnection = require('../dalManager/appDbConnection')
 
 routePost = express.Router();
 
 routePost.post("/posts", postContent);
 
-var connection;
+
 function postContent(req, res, next) {
 
-    var x = req.body;
-    var Connection = require('tedious').Connection;
-    var config = {
-        userName: 'sa',
-        password: 'root',
-        server: 'localhost',
-        // If you are on Microsoft Azure, you need this:  
-        options: { encrypt: true, database: 'dnazeDB' }
-    };
-    connection = new Connection(config);
-    connection.on('connect', function (err) {
-        // If no error, then good to proceed.  
-        console.log("Connected");
-        executeStatement1();
-  
-        
-    });
+    executeStatement1();
 
     console.log(allRows.length);
     res.send(allRows);
     allRows = [];
-    // console.log("posted post.");
+    
 }
 
 
@@ -58,7 +43,7 @@ function executeStatement1() {
             console.log(err);
         }
         else {
-            //console.log(rowCount);
+            console.log(rowCount);
 
         }
     });
@@ -78,7 +63,7 @@ function executeStatement1() {
 
     
     //console.log(allRows.values);
-    connection.execSql(request);
+    dbConnection.execSql(request);
     
 }  
 
