@@ -35,19 +35,20 @@ class App extends Component {
         
     }
     render() {
-        let arr = this.state.posts;
-        console.log(1,arr)
-        let result = arr.map(( post )=>{
-            return <div key={ post.postId } ><Post 
-            userName={post.userId}
-            catalog={post.postId}
-            title={post.postSubject}
-            content={post.postContent} /></div>
-        });
+        // let arr = this.state.posts;
+        // console.log(1,arr)
+        // let result = arr.map(( post )=>{
+        //     return <div key={ post.postId } ><Post 
+        //     userName={post.userId}
+        //     catalog={post.postId}
+        //     title={post.postSubject}
+        //     content={post.postContent} /></div>
+        // });
         return (
             <div className="App">
-                <FormPost />
-                { result }
+                {/* <FormPost /> */}
+                {/* { result } */}
+                <Post />
                
             </div>    
         );
