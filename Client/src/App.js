@@ -18,7 +18,7 @@ class App extends Component {
 
     }
     loadPosts(){
-        
+        //ToDo
         fetch('http://localhost:5000/posts',{
             method: 'get',
             headers: {
