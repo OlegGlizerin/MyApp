@@ -1,32 +1,17 @@
-var routeHome = require('./appRouting/home');
-var routePost = require('./appRouting/post');
-var routePostCreate = require('./appRouting/postCreate');
-const express = require('express')
 
-var cors = require('cors')
-var app = express()
+const http = require('http');
 
-app.use(cors())
+const app = require('./app');
 
-var bodyParser = require('body-parser')
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-})); 
+const port = 5000;
 
-app.use(routeHome);
-app.use(routePost);
-app.use(routePostCreate);
-//routeHome.use("/", routeHome);
+const server = http.createServer(app);
+
+server.listen(port, ()=>{
+    console.log('server run on port:',port);
+});
 
 
-
-
-
-
-
-
-app.listen(5000, () => console.log('Example app listening on port 5000!'))
 
 
 

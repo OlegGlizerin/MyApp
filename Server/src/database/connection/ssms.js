@@ -2,9 +2,11 @@
 
 const Connection = require('tedious').Connection;
  
-function getDb() {
-    
-    var config = {
+module.exports.connection = connection();
+
+
+function connection() { 
+    const config = {
         userName: 'myapplicationdb',
         password: 'Rc4Q71N13~~5',
         server: 'mssql2.gear.host',
@@ -15,11 +17,5 @@ function getDb() {
    
    return dbConnection;
 
- }
-
-
-
-var dbConnection = getDb();
-
-module.exports = dbConnection;
+}
 
