@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import FormPost from './FormPost/FormPost';
 
-import Post from './Post/Post';
-import LeftBar from './LeftBar/LeftPanel';
-import RightBar from './RightBar/RightPanel';
+
+import PostBody from './Componenets/Post/js/PostBody';
+import PostCreateForm from './Componenets/Post/js/PostCreateForm';
+
+
 
 class App extends Component {
     constructor( props ){
@@ -17,9 +18,9 @@ class App extends Component {
 
     }
     loadPosts(){
-        let posts = [];
+        
         fetch('http://localhost:5000/posts',{
-            method: 'post',
+            method: 'get',
             headers: {
                 'content-type': 'application/json'
             },
@@ -31,6 +32,7 @@ class App extends Component {
             this.setState({
                 posts: data,
             });
+            console.log(data);
         })
         .catch( err=>{
             console.log( err)
@@ -47,14 +49,24 @@ class App extends Component {
         //     title={post.postSubject}
         //     content={post.postContent} /></div>
         // });
+        var postContent = this.state.posts.map((post) => {
+            return <PostBody 
+                        key = {post.postId}
+                        userId = {post.userId} 
+                        postSubject = {post.postSubject} 
+                        postContent = {post.postContent}
+                    />;
+            
+        });
         return (
-            <div className="App">
-                {/* <FormPost /> */}
-                {/* { result } */}
-                <div className='content'>
-                <LeftBar />
-                <Post />
-                <RightBar />
+            <div className = "App">
+                <PostCreateForm />
+                <div className = 'content'>
+                   
+                    <div className='posts'>
+                        {postContent}
+                    </div>
+                  
                 </div>
                
             </div>    
