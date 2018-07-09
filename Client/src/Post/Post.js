@@ -1,4 +1,3 @@
-
 import * as React from 'react'
 
 import './Post.css';
@@ -36,7 +35,7 @@ function Post( props ){
                 <hr />
 
                 <div className='comments'>
-
+                
                     <div className='comment' >
                         <div className='userImage' >
                             <img src={ require('../ebalo.jpg') } />
@@ -58,7 +57,6 @@ function Post( props ){
                 
                 </div>
                 
-
                 {/* <div className='userName' > { props.userName } </div>
                 <div> { props.catalog } </div>
                 <div> { props.subject } </div>

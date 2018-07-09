@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import './App.css';
 
 import FormPost from './FormPost/FormPost';
+
 import Post from './Post/Post';
+import LeftBar from './LeftBar/LeftPanel';
+import RightBar from './RightBar/RightPanel';
 
 class App extends Component {
     constructor( props ){
@@ -48,7 +51,11 @@ class App extends Component {
             <div className="App">
                 {/* <FormPost /> */}
                 {/* { result } */}
+                <div className='content'>
+                <LeftBar />
                 <Post />
+                <RightBar />
+                </div>
                
             </div>    
         );
