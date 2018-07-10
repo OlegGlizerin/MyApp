@@ -2,7 +2,7 @@
 
 const Connection = require('tedious').Connection;
  
-module.exports.connection = connection();
+
 
 
 function connection() { 
@@ -14,8 +14,15 @@ function connection() {
         options: { encrypt: true, database: 'myapplicationdb' }
     };
     const dbConnection = new Connection(config);
-   
+    dbConnection.on('connect', function(err) {
+        if(err) {
+            console.log('something bad happend in connect.');
+        }
+    });
    return dbConnection;
 
 }
+
+
+module.exports = connection();
 

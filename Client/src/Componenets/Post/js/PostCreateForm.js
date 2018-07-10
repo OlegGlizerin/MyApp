@@ -3,24 +3,24 @@ import * as React from 'react';
 
  /**
   * json{
-  *     userName,
-  *     catalog,
-  *     title,
-  *     content,
+  *     userId: 1,
+        postSubject: '',
+        postContent: '',
   *     
   * }
   */
 
 export default
-class FormPost extends React.Component{
+
+class CreatePost extends React.Component{
     constructor( props ){
         super( props );
 
         this.state = {
-            userName: 'oleg',
-            catalog: 'soccer',
-            content: '',
-            subject: '', 
+           
+            userId: 1,
+            postSubject: '',
+            postContent: '', 
         }
         this.sendPost = this.sendPost.bind( this );
         this.contentHandler = this.contentHandler.bind( this );
@@ -31,7 +31,7 @@ class FormPost extends React.Component{
         let data = this.state;
       
         console.log(JSON.stringify(data))
-        fetch('http://localhost:5000/postCreate',{
+        fetch('http://localhost:5000/posts',{
             method: 'post',
             body: JSON.stringify(data),
             headers: {
@@ -51,7 +51,7 @@ class FormPost extends React.Component{
     }
     subjectHandler( event ){       
         this.setState({
-            subject: event.target.subject,
+            postSubject: event.target.value,
         });
     }
     contentHandler( event ){
@@ -63,7 +63,7 @@ class FormPost extends React.Component{
 
         //GOOD call component render function automaticly        
         this.setState({
-            content: event.target.value,
+            postContent: event.target.value,
         });
     }
 
