@@ -1,6 +1,6 @@
 import * as React from 'react'
-
 import '../css/PostBody.css';
+import Comment from '../../comment/Comment';
 
 
 function Post( props ){
@@ -28,40 +28,15 @@ function Post( props ){
                     <div className='postComment'> Comment</div>
                     <div className='postShare'> Share </div>
                 </div>
-
                 <hr />
-
                 <div className='comments'>
-                
-                    <div className='comment' >
-                        <div className='userImage' >
-                            <img src={ require('../../../ebalo.jpg') } />
-                        </div>
-                        <div className='commentContent' > comment 2 </div>
-                    </div>
-                    <div className='comment' >
-                        <div className='userImage' >
-                            <img src={ require('../../../ebalo.jpg') } />
-                        </div>
-                        <div className='commentContent' > comment 2 </div>
-                    </div>
-                    <div className='comment' >
-                        <div className='userImage' >
-                            <img src={ require('../../../ebalo.jpg') } />
-                        </div>
-                        <div className='commentContent' > comment 2 </div>
-                    </div>              
-                
-                </div>
-                
-                {/* <div className='userName' > { props.userName } </div>
-                <div> { props.catalog } </div>
-                <div> { props.subject } </div>
-                <div> { props.content } </div> */}
-             
-            </div>
-           
-            
+                    <Comment />                                
+                    <Comment />                                
+                    <Comment />                                
+                </div>                     
+            </div>          
         );
 }
 export default Post;
+
+
