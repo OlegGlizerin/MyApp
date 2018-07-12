@@ -46,6 +46,7 @@ module.exports.getAll = function(req, res){
         connection.ssms.execSql(request2); 
         console.log('rC think first') ;
         result.posts = posts;
+        // test
         posts = []; 
     });
     request.on('row', function (columns) {
