@@ -1,9 +1,5 @@
 
-
 const Connection = require('tedious').Connection;
- 
-
-
 
 function connection() { 
     const config = {
@@ -14,15 +10,17 @@ function connection() {
         options: { encrypt: true, database: 'myapplicationdb' }
     };
     const dbConnection = new Connection(config);
-    dbConnection.on('connect', function(err) {
+    dbConnection.on('connect', function(err, conn) {
         if(err) {
             console.log('something bad happend in connect.');
+        }
+        else{
+            console.log('sql server connected:');
         }
     });
    return dbConnection;
 
 }
-
-
-module.exports = connection();
+const connect = connection()
+module.exports = connect;
 

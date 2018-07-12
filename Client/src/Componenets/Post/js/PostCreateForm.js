@@ -44,29 +44,18 @@ class CreatePost extends React.Component{
         .then((data)=>console.log(data))
         .catch( err=>{
             console.log( err)
-        });
-        
-
-        
+        });            
     }
     subjectHandler( event ){       
         this.setState({
             postSubject: event.target.value,
         });
     }
-    contentHandler( event ){
-
-        // event.target = hold the value of input
-
-        //BAD Do not mutate state directly - not render component
-        // this.state.content =  event.target.value;
-
-        //GOOD call component render function automaticly        
+    contentHandler( event ){        
         this.setState({
             postContent: event.target.value,
         });
     }
-
     render(){
         return(
             <div className='formPost' >
