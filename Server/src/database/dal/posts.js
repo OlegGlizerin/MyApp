@@ -3,35 +3,59 @@ const connection = require('../connection');
 const Request = require('tedious').Request;
 const TYPES = require('tedious').TYPES;
 
-let posts = [];
+const mainComments = require('./mainComments');
 
+let posts = [];
+let result = {};
 module.exports.getAll = function(req, res){
     
-    //console.log(connection)
-    request = new Request("select * from Posts", function (err, rowCount, rows) {
-        if (err)
-            console.log(err);
-    });   
+    request = new Request("select * from Posts",requestError);  
     
     request.on('doneProc', function (rowCount, more, rows) { 
+        console.log('fetch post and now gets messages...');
+       
+          
         
-        res.send(posts.reverse());
-        //console.log(posts);
-        posts = []; // truncate
+         
 
-        console.log("Posts appear.");
+    });
+    request.on('requestCompleted', function () {
+        let comments = [];
+        query = "select * from MainComments";
+        
+        let request2 = new Request(query, requestError);     
+        request2.on('doneProc', function (rowCount, more, rows) {       
+            result.comments = (comments.reverse());
+            comments = []; 
+            console.log('done');
+            console.log(result)
+        });
+    
+        request2.on('row', function (columns) {
+            // on 4 same fucntion OUTSIDE function
+            let comment = {}; 
+            columns.forEach(function (column) {
+                comment[column.metadata.colName] = column.value;
+            });
+            comments.push(comment);
+        });  
+        request2.on('requestCompleted', function () { 
+                res.send(result)
+        });
+        
+        connection.ssms.execSql(request2); 
+        console.log('rC think first') ;
+        result.posts = posts;
+        posts = []; 
     });
     request.on('row', function (columns) {
-        console.log("first");
         let post = {}; 
         columns.forEach(function (column) {
-            //console.log(column.metadata.colName + ":" + column.value)
             post[column.metadata.colName] = column.value;
-            //console.log(post)
         });
         posts.push(post);
-        //console.log(posts);
     });
+    
 
     
     
@@ -45,18 +69,17 @@ module.exports.create = function(req, res){
     let query = 
         `insert into Posts(userId, postSubject, postContent) values (${req.body.userId}, '${req.body.postSubject.toString()}', '${req.body.postContent}')`;
 
-        console.log(query);
-    var request2 = new Request(query, createPost);
+    var request = new Request(query, requestError);
         
  
-    connection.ssms.execSql(request2);
+    connection.ssms.execSql(request);
     
 
     res.send(allRows);
     allRows = [];
 }
 
-function createPost(err, rowCount, rows) {
+function requestError(err, rowCount, rows) {
     if (err) {
         console.log(err);
     }

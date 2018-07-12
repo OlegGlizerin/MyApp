@@ -35,7 +35,7 @@ class App extends Component {
             console.log(data);
         })
         .catch( err=>{
-            console.log( err)
+            console.log( err);
         });
         
     }
