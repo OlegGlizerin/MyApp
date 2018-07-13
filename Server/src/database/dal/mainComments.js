@@ -1,15 +1,15 @@
 
-const connection = require('../connection');
+const poolInstance = require('../connection');
 const Request = require('tedious').Request;
 const TYPES = require('tedious').TYPES;
 
 let mainComments = [];
 let query;
-var connectivity;
+let connectivity;
 
 module.exports.getAll = function(req, res){ 
 
-    connection.ssms.acquire(function (err, connection) {
+    poolInstance.ssms.acquire(function (err, connection) {
         if (err) {
             console.error(err);
             return;
@@ -52,7 +52,7 @@ module.exports.create = function(req, res){
     var request2 = new Request(query, requestError);
         
  
-    connection.ssms.execSql(request2);
+    poolInstance.ssms.execSql(request2);
     
 
     res.send(allRows);
@@ -64,7 +64,9 @@ function requestError(err, rowCount, rows) {
         console.log(err);
     }
     else{
+        
         connectivity.release();
+        connectivity.close();
     }
 }
 

@@ -1,19 +1,19 @@
 
-const connection = require('../connection');
+const poolInstance = require('../connection');
 const Request = require('tedious').Request;
 const TYPES = require('tedious').TYPES;
 
 const mainComments = require('./mainComments');
 
 let posts = [];
-var conectivity;
+let conectivity;
 module.exports.getAllPosts = function(req, res){
     
 
-    connection.ssms.on('error', function(err) {
+    poolInstance.ssms.on('error', function(err) {
         console.error(err);
     });
-    connection.ssms.acquire(function (err, connection) {
+    poolInstance.ssms.acquire(function (err, connection) {
         if (err) {
             console.error(err);
             return;
@@ -28,9 +28,6 @@ module.exports.getAllPosts = function(req, res){
             res.send(posts);
             
             posts = [];
-        });
-        request.on('done', function (rowCount, more, rows) { 
-            console.log('done postsssss.');
         });
     
         request.on('row', function (columns) {
@@ -65,7 +62,7 @@ module.exports.create = function(req, res){
     var request = new Request(query, requestError);
         
  
-    connection.ssms.execSql(request);
+    poolInstance.ssms.execSql(request);
     
 
     res.send(allRows);
