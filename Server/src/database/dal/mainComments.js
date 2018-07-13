@@ -3,35 +3,51 @@ const connection = require('../connection');
 const Request = require('tedious').Request;
 const TYPES = require('tedious').TYPES;
 
-let posts = [];
+let mainComments = [];
 let query;
+var connectivity;
 
 module.exports.getAll = function(req, res){ 
-    query = "select * from MainComments";
-    request = new Request(query, requestError);     
-    request.on('doneProc', function (rowCount, more, rows) {       
-        res.send(posts.reverse());
-        posts = []; 
+
+    connection.ssms.acquire(function (err, connection) {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        connectivity = connection;
+
+        console.log('get all comments....')
+        query = "select * from MainComments";
+        request = new Request(query, requestError);     
+        request.on('doneProc', function (rowCount, more, rows) {   
+            console.log('fetch comments ...');
+            console.log(mainComments);    
+            res.send(mainComments);
+            mainComments = []; 
+        });
+    
+        request.on('row', function (columns) {
+            // on 4 same fucntion OUTSIDE function
+            let comment = {}; 
+            columns.forEach(function (column) {
+                comment[column.metadata.colName] = column.value;
+            });
+            mainComments.push(comment);
+        });   
+        
+        connectivity.execSql(request); 
     });
 
-    request.on('row', function (columns) {
-        // on 4 same fucntion OUTSIDE function
-        let post = {}; 
-        columns.forEach(function (column) {
-            post[column.metadata.colName] = column.value;
-        });
-        posts.push(post);
-    });   
-    
-    connection.ssms.execSql(request); 
+
+
+   
        
 }
 
 var allRows = [];
 
 module.exports.create = function(req, res){
-    query = 
-        `insert into Posts(userId, postSubject, postContent) values (${req.body.userId}, '${req.body.postSubject.toString()}', '${req.body.postContent}')`;
+    //query = `insert into MainComments(userId, postSubject, postContent) values (${req.body.userId}, '${req.body.postSubject.toString()}', '${req.body.postContent}')`;
 
     var request2 = new Request(query, requestError);
         
@@ -48,7 +64,7 @@ function requestError(err, rowCount, rows) {
         console.log(err);
     }
     else{
-
+        connectivity.release();
     }
 }
 

@@ -6,6 +6,8 @@ export default
 class Comment extends React.Component{
     
     render(){
+        
+        
         return(
             <div className='comment' >
 
@@ -14,8 +16,8 @@ class Comment extends React.Component{
                         <img src={ require('../../ebalo.jpg') } />
                     </div>
                     <div className='commentContent' >
-                        <span className='commentOwner'> user name </span>
-                        comment 1 
+                        <span className='commentOwner'> {this.props.userId} </span>
+                        {this.props.commentContent}
                     </div>
                 </div>
 
