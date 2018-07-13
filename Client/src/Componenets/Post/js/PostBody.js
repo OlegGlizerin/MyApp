@@ -4,6 +4,12 @@ import Comment from '../../comment/Comment';
 
 
 function Post( props ){
+
+    var allComments = props.postComments.map((comment) => {
+        return <Comment key={comment.mainCommentId} commentContent={comment.commentContent} userId={comment.userId}/>
+    });
+    console.log('comments of specific body:');
+    console.log(allComments);
         return(
             <div className='post' >
                 <div className='postHeader'>
@@ -30,9 +36,12 @@ function Post( props ){
                 </div>
                 <hr />
                 <div className='comments'>
-                    <Comment />                                
-                    <Comment />                                
-                    <Comment />                                
+                    
+                        
+                        {allComments}
+                    
+                                                 
+                                                
                 </div>                     
             </div>          
         );
