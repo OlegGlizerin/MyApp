@@ -3,7 +3,7 @@ const router = express.Router();
 const dal = require('../database/dal');
 
 // return all posts
-router.get('/', dal.posts.getAll);
+router.get('/', dal.posts.getAllPosts);
 // return post by id
 router.get('/:id', function(req, res){
     res.send('post by id');
