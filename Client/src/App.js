@@ -1,12 +1,9 @@
+
 import React, { Component } from 'react';
 import './App.css';
 
-
-
-import PostBody from './Componenets/Post/js/PostBody';
-import PostCreateForm from './Componenets/Post/js/PostCreateForm';
-
-
+import Post from './Componenets/Post/Post'; 
+// props =>  userName,catalog,title,content
 
 class App extends Component {
     constructor( props ){
@@ -30,8 +27,6 @@ class App extends Component {
             },
         })
         .then(function(res) {
-            console.log('posts response.');
-            console.log(res);
             return res.json();                
         })
         .then((data)=>{
@@ -39,7 +34,7 @@ class App extends Component {
                 posts: data,
             });
             console.log(data);
-            this.loadComments();
+            // this.loadComments();
             
         })
         .catch( err=>{
@@ -48,36 +43,21 @@ class App extends Component {
         
     }
     render() {
-        // let arr = this.state.posts;
-        // console.log(1,arr)
-        // let result = arr.map(( post )=>{
-        //     return <div key={ post.postId } ><Post 
-        //     userName={post.userId}
-        //     catalog={post.postId}
-        //     title={post.postSubject}
-        //     content={post.postContent} /></div>
-        // });
         var postContent = this.state.posts.map((post) => {
-            return <PostBody 
+            return <Post
                         key = {post.postId}
                         userId = {post.userId} 
                         postSubject = {post.postSubject} 
                         postContent = {post.postContent}
-                    />;
-            
+                    />;     
         });
-        
         return (
             <div className = "App">
-                <PostCreateForm />
-                <div className = 'content'>
-                   
+                <div className = 'content'>               
                     <div className='posts'>
                         {postContent}
-                    </div>
-                  
-                </div>
-               
+                    </div>             
+                </div>         
             </div>    
         );
     }
@@ -108,42 +88,7 @@ class App extends Component {
         });
         
     }
-    render() {
-        console.log('in render comments.')
-        
-        var commentsAndPostsContent = this.state.posts.map((post) => {
-            
-             console.log(this.state.comments)
-            var commentsOfPosts = this.state.comments.filter((comment) => {
-                console.log('in map comments')
-                return post.postId === comment.postId;
-            });
-            console.log('printvals')
-            console.log(commentsOfPosts);
-            return <PostBody 
-                            key = {post.postId}
-                            userId = {post.userId} 
-                            postSubject = {post.postSubject} 
-                            postContent = {post.postContent}
-                            postComments = {commentsOfPosts}
-                        />;
-            
-            
-        });
-        return (
-            <div className = "App">
-                <PostCreateForm />
-                <div className = 'content'>
-                   
-                    <div className='posts'>
-                        {commentsAndPostsContent}
-                    </div>
-                  
-                </div>
-               
-            </div>    
-        );
-    }
+  
 }
 
 export default App;

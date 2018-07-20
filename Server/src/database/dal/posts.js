@@ -32,7 +32,7 @@ module.exports.create = function(req, res){
 
         poolInstance.ssms.acquire(function (err, connection) {
         connectionForRequest = connection;
-        request = new Request(query, requestError);
+        request = new Request(query, close);
         connectionForRequest.execSql(request);
         res.send("Ok");
     });
