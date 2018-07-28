@@ -1,18 +1,24 @@
-
 const poolInstance = require('../connection');
 const Request = require('tedious').Request;
 const TYPES = require('tedious').TYPES;
 const date = require('../../utils');
 const mainComments = require('./mainComments');
+const fs = require('fs');
 
-let posts = [];
+let lineNum = 1;
+
 let likes = [];
-let connectionForRequest;
-let request;
+
 
 //public functions
 module.exports.getAllPosts = function(req, res){
-    
+    let date = new Date().toLocaleString('en-GB');
+    var msg = 'new connection: ' + req.id  + ', ' + date + '\n';
+    fs.appendFile('log.txt', lineNum++ + ': ' + msg, (err)=>{
+        if( err)
+            console.log('erron on write to log' + date + ' :', err.message + '\n' );
+    });
+ 
     poolInstance.ssms.on('error', function(err) {
         console.error(err);
     });
@@ -21,9 +27,9 @@ module.exports.getAllPosts = function(req, res){
             console.error(err);
             return;
         }
-        connectionForRequest = connection;
-        request = getAllPostsRequest(close, res);
-        connectionForRequest.execSql(request); 
+        
+        request = getAllPostsRequest(connection, req.body, req, res);
+        connection.execSql(request); 
     });
 }
 
@@ -95,24 +101,39 @@ function close(err, rowCount, rows) {
     }
     else{
         connectionForRequest.release();
-        connectionForRequest.close();
+        // connectionForRequest.close();
     }
+}
+
+function f( err, rowCount, con ,req){
+    if(err) {
+        console.error(err);
+    }
+    let date = new Date().toLocaleString('en-GB');
+    var msg = 'close connection: ' + req.id + ', ' + date + '\n';
+    fs.appendFile('log.txt', lineNum++ + ': ' + msg, (err)=>{
+        if( err)
+            console.log('erron on write to log' + date + ' :', err.message + '\n' );
+    });
+    con.release();
 }
 
 
 
+function getAllPostsRequest(connection, postIdsFromReq, req, res) {
+    query = "exec getAllPosts " + postIdsFromReq;
+    let posts = [];
 
-function getAllPostsRequest(close, res) {
-    query = "select p.userId, u.userName,p.postSubject, p.postContent, p.createDate, p.postId, c.catalogName from Posts as p left join Users as u on p.userId = u.userId left join CatalogsPostsExtended as cpe on p.postId=cpe.postId left join Catalogs as c on c.catalogId = cpe.catalogId";
-
-
-    request = new Request(query, close); 
+    let request = new Request(query, ( err, rowCount ) => { f( err, rowCount,  connection, req) } ); 
     request.on('doneProc', function (rowCount, more, rows) { 
-        res.send(posts);
+   
+        var newPosts = parseComments(posts);
+        res.send(newPosts);
         posts = [];
     });
     request.on('row', function (columns) {
         let post = {}; 
+       
         columns.forEach(function (column) {
             post[column.metadata.colName] = column.value;
         });
@@ -120,6 +141,60 @@ function getAllPostsRequest(close, res) {
     });
     return request;
 }
+
+//concatenate comments to posts
+function parseComments(posts){
+
+    const res = [];
+    let c;
+    res.push(posts.shift());
+    res[0].commentContent = [res[0].commentContent];
+    while( c = posts.shift()){
+        if(res[res.length-1].postId === c.postId){
+            res[res.length-1].commentContent.push(c.commentContent);
+        }
+        else{
+            
+            res.push(c);
+        }
+           
+    }  
+    return res;    
+}
+
+// function parseComments(posts) {
+//     let newPosts = []
+//     let currentPostId;
+//     let commentContent = []
+//     let newPost = [];
+//     posts.forEach(element => {
+//         if(currentPostId) {
+//             currentPostId = element.postId;
+//         }
+
+//         if(element.postId != currentPostId) {
+//             newPosts.push(commentContent);
+//         }
+//         else {
+//             if(!newPosts.includes(element.postId)) {
+//                 newPost.postId = element.postId,
+//             newPost.userId = element.userId,
+//             newPost.userName = element.userName,
+//             newPost.postSubject = element.postSubject,
+//             newPost.postContent = element.postContent,
+//             newPost.createdate = element.createDate,
+//             newPost.catalogName = element.catalogName,
+//             newPost.likes = element.likes,
+//             newPost.AllComments = 
+//             }
+            
+            
+//         }
+
+        
+
+//     });
+// }
 
 
 function getAllLikesRequest(close, res) {
@@ -141,7 +216,3 @@ function getAllLikesRequest(close, res) {
     });
     return request;
 }
-
-
-
-    

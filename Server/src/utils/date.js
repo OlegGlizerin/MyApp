@@ -1,3 +1,3 @@
-const currentDate = new Date().toLocaleString('en-GB');
 
-module.exports = currentDate;
+
+module.exports = new Date().toLocaleString('en-GB');
