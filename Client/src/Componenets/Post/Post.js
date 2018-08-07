@@ -19,6 +19,8 @@ import {
 } from '@material-ui/icons';
 
 
+import PostApi from '../../api/post'
+
 
 export default 
 class Post extends React.Component{
@@ -27,8 +29,11 @@ class Post extends React.Component{
 
         this.state = {
             expended: false,
+            liked: false,
+            comment: '',
+            allComments: this.props.commentContent
         }
-
+       
         this.showMessages = this.showMessages.bind( this );
     }
     showMessages(){
@@ -38,11 +43,35 @@ class Post extends React.Component{
         console.log(this.state.expended);
     }
 
+    setLike() {
+        console.log(this);
+        
+        this.setState({
+            liked: !this.state.liked
+        });
+        
+    }
+
+    async addComment() {
+        let x = this.state.comment;
+       await PostApi.createComment(this.state.comment);
+
+       this.setState(function (state, props) {  return {   allComments: state.allComments.concat([this.state.comment]) } });
+
+       console.log(this.state.allComments);
+    }
+
+
+
 
     render(){
+        console.log(this.props);
+        const allCommentsCardContents = this.state.allComments.map((comment, i) => {
+            return <CardContent key={i}> {comment} </CardContent>
+        });
         const media = {
             height: 0,
-            paddingTop: '70%',
+            paddingTop: '30%',
           };
         return(
             <div className='postWrapper' >
@@ -57,17 +86,17 @@ class Post extends React.Component{
                             </IconButton>
                         }
                         title = { this.props.userId }
-                        subheader = 'i need some one to build me app called arab detecter :)'
+                        subheader = { this.props.userName + ", " + this.props.catalogName + ", " + this.props.createDate + "\n" + this.props.postSubject} 
+                        
 
                     />
                     <CardMedia image = 'dna.jpg' style = { media } />
                     <CardContent>
-                        This impressive paella is a perfect party dish and a fun meal to cook together with
-                        your guests. Add 1 cup of frozen peas along with the mussels, if you like.
+                    { this.props.postContent}
                     </CardContent>
                     <CardActions>
-                        <IconButton>
-                            <Favorite />
+                        <IconButton onClick={this.setLike.bind(this)}>
+                            <Favorite color={this.state.liked ? 'secondary' : 'primary'}/>
                         </IconButton>
                         <IconButton>
                             <Share />
@@ -79,14 +108,11 @@ class Post extends React.Component{
                             <ExpandMore />
                         </IconButton>
                     </CardActions>
+                    <input type="text" className="postComment" onInput={(event) => {this.state.comment = event.target.value}}/>
+                    <br/><br/>
+                    <input type="submit" onClick={() => {this.addComment()}}/>
                     <Collapse in = { this.state.expended } > 
-                        <CardContent>
-                            loremloremloremlo remloremloremloreml oremloremloremlorem
-                            loremloremloremlo remloremloremloreml oremloremloremlorem
-                            loremloremloremlo remloremloremloreml oremloremloremlorem
-                            loremloremloremlo remloremloremloreml oremloremloremlorem
-                            loremloremloremlo remloremloremloreml oremloremloremlorem
-                        </CardContent>
+                         {allCommentsCardContents}  
                     </Collapse>
                   
                     

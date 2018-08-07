@@ -12,9 +12,7 @@ router.get('/:id', function(req, res){
     res.send('comments by id');
 });
 // add new messages
-router.post('/',function(req, res){
-    res.send(' new comments');
-});
+router.post('/', dal.mainComments.create);
 // update messages by id
 router.post('/:id', function(req, res){
     res.send(' update comments');

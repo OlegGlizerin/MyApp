@@ -8,30 +8,46 @@ import Post from './Componenets/Post/Post';
 class App extends Component {
     constructor( props ){
         super( props );
-        this.loadPosts();
+       
         
         this.state = {
             posts: [],
             comments: [],
+            postsContent: ";"
         }
+        this.loadPosts();
 
     }
     loadPosts(){
-        
+        console.log(this.state.postsContent)
         console.log('load posts')
         //ToDo2ss
-        fetch('http://localhost:5000/posts',{
-            method: 'get',
+        fetch('http://localhost:4700/posts',{
+            method: 'post',
+            
             headers: {
-                'content-type': 'application/json'
+               
+                'Content-Type': 'text/html'
+                
             },
+            //instead of quotes ''
+            body: JSON.stringify(this.state.postsContent)
         })
         .then(function(res) {
+            console.log(res);
             return res.json();                
         })
         .then((data)=>{
+
+            let existingPosts = this.state.postsContent;
+
+            data.forEach(post => {
+                existingPosts += post.postId + ";"
+            });
+         
             this.setState({
-                posts: data,
+                postsContent : existingPosts,
+                posts: this.state.posts.concat(data)
             });
             console.log(data);
             // this.loadComments();
@@ -49,6 +65,11 @@ class App extends Component {
                         userId = {post.userId} 
                         postSubject = {post.postSubject} 
                         postContent = {post.postContent}
+                        userName = {post.userName}
+                        catalogName = {post.catalogName}
+                        likes = {post.likes}
+                        createDate = {post.createDate}
+                        commentContent = {post.commentContent}
                     />;     
         });
         return (
@@ -57,7 +78,8 @@ class App extends Component {
                     <div className='posts'>
                         {postContent}
                     </div>             
-                </div>         
+                </div>  
+                <button type="button" className="morePosts"  onClick={(e) => {this.loadPosts()}} >More posts...</button>       
             </div>    
         );
     }
@@ -65,7 +87,7 @@ class App extends Component {
     loadComments(){
         //ToDo2ss
         console.log('load comments')
-        fetch('http://localhost:5000/comments',{
+        fetch('http://localhost:4700/comments',{
             method: 'get',
             headers: {
                 'content-type': 'application/json'

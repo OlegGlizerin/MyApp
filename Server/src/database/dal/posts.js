@@ -12,6 +12,7 @@ let likes = [];
 
 //public functions
 module.exports.getAllPosts = function(req, res){
+    console.log(req.body);
     let date = new Date().toLocaleString('en-GB');
     var msg = 'new connection: ' + req.id  + ', ' + date + '\n';
     fs.appendFile('log.txt', lineNum++ + ': ' + msg, (err)=>{
@@ -154,7 +155,7 @@ function parseComments(posts){
             res[res.length-1].commentContent.push(c.commentContent);
         }
         else{
-            
+            c.commentContent = [c.commentContent];
             res.push(c);
         }
            

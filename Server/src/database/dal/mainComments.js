@@ -34,12 +34,12 @@ module.exports.getAll = function(req, res){
 //Create Comment
 //-----------------------------------------
 module.exports.create = function(req, res){
-    query = `insert into MainComments(userId, postSubject, postContent) values (${req.body.userId}, '${req.body.postSubject.toString()}', '${req.body.postContent}')`; 
+    query = `insert into MainComments(postId, commentContent) values (${req.body.postId}, '${req.body.commentContent}')`; 
     poolInstance.ssms.acquire(function (err, connection) {
         connectionForRequest = connection;
-        request = new Request(query, requestError);
+        request = new Request(query, ( err, rowCount ) => { f( err, rowCount,  connection, req) } ); 
         connectionForRequest.execSql(request);
-        res.send("Ok");
+        res.send("Comment inserted to DB.");
     });
 }
 //-----------------------------------------
@@ -48,6 +48,23 @@ module.exports.create = function(req, res){
 
 //private functions
 //-----------------------------------------
+
+function f( err, rowCount, con ,req){
+    if(err) {
+        console.error(err);
+    }
+    let date = new Date().toLocaleString('en-GB');
+    // var msg = 'close connection: ' + req.id + ', ' + date + '\n';
+    // fs.appendFile('log.txt', lineNum++ + ': ' + msg, (err)=>{
+    //     if( err)
+    //         console.log('erron on write to log' + date + ' :', err.message + '\n' );
+    // });
+    con.release();
+}
+
+
+
+
 function getAllCommentsRequest(callBack, res) {
     query = "select * from MainComments";
     request = new Request(query, callBack);     
