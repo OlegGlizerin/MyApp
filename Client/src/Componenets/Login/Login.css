@@ -1,0 +1,43 @@
+
+
+
+.loginBox{
+    display: flex;
+    height: 100%;
+
+  
+}
+.about, .login {
+    flex-basis: 50%;
+    margin-top: 15%;
+}
+.about{
+    background: url('/about-background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+
+}
+.aboutContent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 80%;
+}
+
+.videoBox{
+}
+
+.login{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 66.3%;
+
+}
+
+.signUp{
+    display: flex;
+    flex-direction: column;
+}
+

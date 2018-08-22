@@ -1,4 +1,8 @@
 
-const ssms = require('./ssms');
+//const ssms = require('./ssms');
+const mongoDb = require('./mongo');
+//module.exports.ssms = ssms;
+module.exports.mongoDb = mongoDb;
 
-module.exports.ssms = ssms;
+
+

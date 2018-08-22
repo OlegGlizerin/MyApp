@@ -1,0 +1,68 @@
+
+
+.signup {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+    background-color: aqua;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: url('/about-background.jpg');
+   
+}
+
+.header, .signUpForm {
+    
+    
+}
+
+.header {
+    
+    margin-right:60%;
+  
+}   
+
+.signUpForm {
+ 
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 5%;
+    padding: 1%;
+}
+
+
+.userDetailsForm {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.userDetails {
+    align-self: center;
+    
+}
+
+.buttonsDirection {
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.questions {
+    display: flex;
+    flex-direction: column;
+}
+
+.stepHeader {
+    text-align: center;
+}
+
+
+.lonelyButtonHelper {
+    display: flex;
+    /* flex-direction: row; */
+    justify-content: space-between;
+    align-content: flex-end;
+    width: 100%;
+}
+

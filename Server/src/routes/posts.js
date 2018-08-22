@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const dal = require('../database/dal');
+const dal = require('../database/dal/mongo');
+const JWT = require('jsonwebtoken');
 
 // return all posts
-router.post('/', dal.posts.getAllPosts);
+router.post('/', verifyToken, dal.post.getPosts);
 
 // add new post
 //router.post('/create', dal.posts.create);
@@ -16,6 +17,25 @@ router.post('/', dal.posts.getAllPosts);
 
 // unlike post
 //router.delete('/like', dal.posts.unLike);
+
+
+function verifyToken( req, res, next ){
+    const token = req.headers.authentication;
+    console.log(req.headers);
+    JWT.verify( token, 'secret', ( err, result) => {
+        if( !err ){
+            console.log( 'res1', result );
+            next();
+        }
+        else{
+            console.log( 'res2', result );
+
+            res.sendStatus( 403 );
+        }
+    });
+
+    
+}
 
 module.exports = router;
 
