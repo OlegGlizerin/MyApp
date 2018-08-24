@@ -5,10 +5,12 @@ const port = 4700;
 
 
 const mongoDb = require('./database/connection').mongoDb;
+
+
 let server;
 
 mongoDb.connect()
-.then(()=>{
+.then(() => {
     console.log('connected to mongodb success');
     server = http.createServer(app);
     server.listen(port, () => {

@@ -21,14 +21,15 @@ router.post('/', verifyToken, dal.post.getPosts);
 
 function verifyToken( req, res, next ){
     const token = req.headers.authentication;
-    console.log(req.headers);
+    //console.log(req.headers);
     JWT.verify( token, 'secret', ( err, result) => {
         if( !err ){
-            console.log( 'res1', result );
+            //console.log( 'Token payload: ', result );
+            req.paylod = result;
             next();
         }
         else{
-            console.log( 'res2', result );
+            console.log( 'Failed to verify token: ', err.message );
 
             res.sendStatus( 403 );
         }
