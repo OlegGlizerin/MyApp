@@ -8,6 +8,8 @@ import SignUp from './Componenets/SignUp/SignUp';
 import Post from './Componenets/Post/Post'; 
 // props =>  userName,catalog,title,content
 import Home from './Home';
+import LocalStorage from './api/storage/localStorage';
+
 
 class App extends Component {
     constructor( props ){
@@ -19,7 +21,7 @@ class App extends Component {
             posts: [],
             comments: [],
             postsContent: ";",
-            token: ""
+            token: LocalStorage.get('Token')
         }
         // this.loadPosts();
 
@@ -82,12 +84,13 @@ class App extends Component {
     }
 
     updateToken(token) {
-        console.log("updateToken,",token);
+        console.log("updatedToken,", token);
         
-            this.setState( {
-                token: token
-            });
-        
+            
+        LocalStorage.set('Token', token);
+        this.setState( {
+            token: token
+        });
         
     }
     
@@ -98,10 +101,19 @@ class App extends Component {
                 <div className = "App">
                     <Switch>
                         <HomeRoute exact path= '/' component = { Home } token = { this.state.token }/>
-                        <Route path = '/login' component = { Login } />
+                        <Route path = '/login' component = { 
+                            () => {
+                                console.log("token in App in login:", this.state.token)
+                                return (<LoginRoute 
+                                            token = { this.state.token } 
+                                            updateToken = {  this.updateToken.bind(this) }
+                                        />)
+                                    } 
+                                } 
+                        />
                         <Route path = '/signup' component = { 
                             () => {
-                            console.log("token in App:", this.state.token)
+                            console.log("token in App in register:", this.state.token)
                             return (<RegisterRoute 
                                         token = { this.state.token } 
                                         updateToken = {  this.updateToken.bind(this) }
@@ -139,6 +151,19 @@ const RegisterRoute = ( props )  => (
             () => {
                 console.log("token in RegisterRoute: ", props.token)
                 return (!props.token ? <SignUp 
+                        token = { props.token } 
+                        updateToken = { props.updateToken } /> : <Redirect to= "/" />)
+                } 
+            } 
+    />
+);
+
+const LoginRoute = ( props )  => (
+    <Route 
+        component = { 
+            () => {
+                console.log("token in LoginRoute: ", props.token)
+                return (!props.token ? <Login 
                         token = { props.token } 
                         updateToken = { props.updateToken } /> : <Redirect to= "/" />)
                 } 

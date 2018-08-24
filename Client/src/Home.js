@@ -1,12 +1,13 @@
 
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Link, Redirect} from "react-router-dom";
+import Post from './Componenets/Post/Post';
 
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
-
+        
         this.state = {
             token: props.token,
             posts: []
@@ -18,7 +19,12 @@ class Home extends React.Component {
 
     render() {
         
-        return <div> { JSON.stringify(this.state.posts) } </div>;
+        return(
+            <div> 
+                <Post />
+                {/* { JSON.stringify(this.state.posts) } */}
+             </div>
+        ); 
     }
 
 

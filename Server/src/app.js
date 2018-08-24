@@ -18,6 +18,8 @@ app.use('/posts', router.posts);
 
 app.use('/signUp', router.signUp);
 
+app.use('/login', router.login);
+
 // fs.writeFile('log.txt', '', function(){console.log('log.txt file clear.')})
 
 module.exports  = app;

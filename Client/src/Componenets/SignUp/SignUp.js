@@ -173,10 +173,17 @@ class SignUp extends React.Component{
             },
             data: JSON.stringify(this.state.formData),
         }
-        axios( config ).then( ( res ) => {
-            // console.log(res.data.token);
+        axios( config ).then(( res ) => {
             this.props.updateToken(res.data.token);
-            console.log( res );
+
+           
+            
+
+        })
+        .catch(( err ) => {
+            if(err) {
+                console.log('Signup failed.', err.message);
+            }
         });
         
     }
@@ -189,7 +196,7 @@ class SignUp extends React.Component{
         this.setState({
             formData: tempForm
         });
-        console.log(event.target,this.state.formData);
+        console.log(event.target, this.state.formData);
     }
 
 

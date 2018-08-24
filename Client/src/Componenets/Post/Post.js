@@ -66,9 +66,10 @@ class Post extends React.Component{
 
     render(){
         console.log(this.props);
-        const allCommentsCardContents = this.state.allComments.map((comment, i) => {
-            return <CardContent key={i}> {comment} </CardContent>
-        });
+        // const allCommentsCardContents = this.state.allComments.map((comment, i) => {
+        //     return <CardContent key={i}> {comment} </CardContent>
+        // });
+        var allCommentsCardContents;
         const media = {
             height: 0,
             paddingTop: '30%',
@@ -85,7 +86,7 @@ class Post extends React.Component{
                                 <MoreVert />
                             </IconButton>
                         }
-                        title = { this.props.userId }
+                        title = { this.props.ownerName }
                         subheader = { this.props.userName + ", " + this.props.catalogName + ", " + this.props.createDate + "\n" + this.props.postSubject} 
                         
 
